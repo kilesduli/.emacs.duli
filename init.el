@@ -1,7 +1,7 @@
 ;;; init.el --- Description -*- lexical-binding: t; -*-
 
 ;;; Stage 1:
-;;;; version check
+;;;; emacs version check
 (when (version< emacs-version "29")
   (warn "This configuration is only tested on Emacs 29"))
 
@@ -38,7 +38,7 @@
 (setq user-emacs-directory amadeus-cache-dir)
 (add-to-list 'native-comp-eln-load-path (expand-file-name "eln/" amadeus-cache-dir))
 
-;;;; install straight.el and download package
+;;;; install straight.el and load package.el
 (setq straight-repository-branch "develop")
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 (defvar bootstrap-version)
@@ -55,7 +55,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (load amadeus-packages-file)
-;;;; setup and setup-define
+;;;; setup and define setup macro
 (straight-use-package 'setup)
 (require 'setup)
 
@@ -111,12 +111,6 @@ has passed."
   :repeatable t
   :signature '(FUNC ...))
 
-(setup-define :hooks
-  (lambda (hook func)
-    `(add-hook ',hook #',func))
-  :documentation "Add pairs of hooks."
-  :repeatable t)
-
 (setup-define :init
   (lambda (&rest body) (macroexp-progn body))
   :documentation "Init keywords like use-package and leaf.")
@@ -131,21 +125,6 @@ has passed."
   :ensure '(nil nil func)
   :repeatable t)
 
-;; TODO not work
-(with-eval-after-load 'imenu
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda ()
-              (setf (map-elt imenu-generic-expression "Setup")
-                    (list (rx line-start (0+ blank)
-                              "(setup" (1+ blank)
-                              (or (group-n 1 (1+ (or (syntax word)
-                                                     (syntax symbol))))
-                                  ;; Add here items that can define a feature:
-                                  (seq "(:" (or "straight" "require" "package")
-
-                                       (group-n 1 (1+ (or (syntax word)
-                                                          (syntax symbol)))))))
-                          1)))))
 ;;; Stage 2: package
 ;;;; Outli: Org-like code outliner
 (setup outli
@@ -156,7 +135,7 @@ has passed."
 ;;;; Meow modal-editing
 (setup meow
   (:require meow)
-  (:init (meow-global-mode 1))
+  (meow-global-mode 1)
   (:option
    meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-setup-indicator)
@@ -310,3 +289,30 @@ has passed."
                                      meow-motion-mode-p
                                      meow-keypad-mode-p
                                      meow-beacon-mode-p)))
+
+;;; Stage 3: major-mode settings
+;; Let the configuration of major-mode be concentrated in one place for easy modification.
+;;;; emacs-lisp-mode
+(setup major:elisp-mode)
+(defun +setup-enable-imenu-support ()
+  (setf (map-elt imenu-generic-expression "Setup")
+        (list (rx line-start (0+ blank)
+                  "(setup" (1+ blank)
+                  (or (group-n 1 (1+ (or (syntax word)
+                                         (syntax symbol))))
+                      ;; Add here items that can define a feature:
+                      (seq "(:" (or "straight" "require" "package")
+                           (1+ blank)
+                           (group-n 1 (1+ (or (syntax word)
+                                              (syntax symbol)))))))
+              1)))
+
+(setup imenu
+  (:with-hook emacs-lisp-mode-hook
+    (:hook +setup-enable-imenu-support)))
+;;; Stage 4: user config
+(setup config:emacs-theme
+  (load-theme 'modus-operandi-tritanopia)
+  (custom-theme-set-faces 'modus-operandi-tritanopia
+                          '(font-lock-comment-face ((t (:inherit modus-themes-slant :foreground "#595959")))))
+  )

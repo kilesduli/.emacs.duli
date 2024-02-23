@@ -1,6 +1,6 @@
 ;; -*- no-byte-compile: t; -*-
 
-;; aria-vertico.el
+;;; Stage 1.5: install package
 (straight-use-package 'vertico)
 (straight-use-package 'orderless)
 (straight-use-package 'consult)
