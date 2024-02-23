@@ -1,5 +1,6 @@
 ;;; early-init.el --- Description -*- lexical-binding: t; -*-
 
+;;; Stage 0: early-init
 ;; Defer garbage collection further back in the startup process
 (setq gc-cons-threshold most-positive-fixnum)
 
@@ -23,3 +24,4 @@
 (push '(vertical-scroll-bars) default-frame-alist)
 ;; (setq-default mode-line-format nil)
 
+(setq make-backup-files nil)
