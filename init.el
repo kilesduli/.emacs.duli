@@ -24,6 +24,7 @@
 
 (add-to-list 'load-path amadeus-modules-dir)
 
+;;;; change user-emacs-directory
 ;; From Henrik: https://github.com/doomemacs/doomemacs/blob/90b1b221fe7c20f2edef341a780e194cd22c7daa/lisp/doom.el#L544
 ;; HACK: I change `user-emacs-directory' because many packages (even built-in
 ;; ones) abuse it to build paths for storage/cache files (instead of correctly
@@ -38,7 +39,7 @@
 (setq user-emacs-directory amadeus-cache-dir)
 (add-to-list 'native-comp-eln-load-path (expand-file-name "eln/" amadeus-cache-dir))
 
-;;;; install straight.el and load package.el
+;;;; install straight.el, load package.el and require setup
 (setq straight-repository-branch "develop")
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 (defvar bootstrap-version)
@@ -55,7 +56,6 @@
   (load bootstrap-file nil 'nomessage))
 
 (load amadeus-packages-file)
-;;;; setup and define setup macro
 (straight-use-package 'setup)
 (require 'setup)
 
