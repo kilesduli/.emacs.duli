@@ -22,3 +22,4 @@
 
 (straight-use-package '(outli :type git :repo "https://github.com/jdtsmith/outli"))
 (straight-use-package 'rime)
+(straight-use-package '(benchmark-init :type git :repo "dholm/benchmark-init-el"))

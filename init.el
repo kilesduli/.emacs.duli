@@ -59,6 +59,13 @@
 (straight-use-package 'setup)
 (require 'setup)
 
+;;;; benchmark-init
+(setup benchmark-init
+  (:require benchmark-init)
+  (:with-function benchmark-init/deactivate
+    (:hook-into after-init-hook)))
+
+;;;; define setup macro
 (setup-define :silence
   (lambda (&rest body)
     `(cl-letf (((symbol-function 'message) (lambda (&rest _args) nil)))
