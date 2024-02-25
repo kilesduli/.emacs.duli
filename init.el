@@ -285,9 +285,6 @@ has passed."
   (:hook-into after-init)
   (:option doom-modeline-major-mode-icon nil))
 
-;; (setup custom
-;;   (load-theme 'doom-one-light t))
-
 ;;;; Rime
 (setup rime
   (:option default-input-method "rime"
