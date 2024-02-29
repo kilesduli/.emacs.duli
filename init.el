@@ -285,7 +285,7 @@ has passed."
   (:hook-into after-init)
   (:option doom-modeline-major-mode-icon nil))
 
-;;;; Rime
+;;;; rime
 (setup rime
   (:option default-input-method "rime"
            rime-user-data-dir "~/.local/emacs-rime"
