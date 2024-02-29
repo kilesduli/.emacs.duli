@@ -8,10 +8,12 @@
 ;;;; constant setup
 (defvar amadeus-emacs-dir user-emacs-directory
   "The user-emacs-directory")
-(defvar amadeus-cache-dir
-  (expand-file-name ".local/cache" amadeus-emacs-dir))
-(defvar amadeus-modules-dir (expand-file-name "modules" amadeus-emacs-dir)
-  "The directory contains all modules.")
+(defvar amadeus-cache-dir (expand-file-name ".local/cache" amadeus-emacs-dir)
+  "This directory will replaced with user-emacs-directory
+   and place some unimportant stuff")
+(defvar amadeus-etc-dir (expand-file-name ".local/etc" amadeus-emacs-dir)
+  "This directory will store global data files")
+
 (defvar amadeus-lisp-dir (expand-file-name "lisp" amadeus-emacs-dir)
   "This directory contains third-party Lisp files.")
 (defvar amadeus-volatile-dir (expand-file-name "volatile" amadeus-emacs-dir)
@@ -19,10 +21,9 @@
   files are loaded automatically.  You shouldn't byte-compile
   these Lisp files.  To disable a file, just change the extension
   from .el to whatever else.")
+
 (defvar amadeus-packages-file (expand-file-name "packages.el" amadeus-emacs-dir)
   "This file is contains all straight-use-package declaration not include modules")
-
-(add-to-list 'load-path amadeus-modules-dir)
 
 ;;;; change user-emacs-directory
 ;; From Henrik: https://github.com/doomemacs/doomemacs/blob/90b1b221fe7c20f2edef341a780e194cd22c7daa/lisp/doom.el#L544
