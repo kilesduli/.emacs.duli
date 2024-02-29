@@ -294,6 +294,13 @@ has passed."
                                      meow-keypad-mode-p
                                      meow-beacon-mode-p)))
 
+;;;; cns
+(setup cns
+  (:with-function cns-auto-enable
+    (:hook-into find-file)))
+
+;; TODO auto build cns binary
+
 ;;; Stage 3: major-mode settings
 ;; Let the configuration of major-mode be concentrated in one place for easy modification.
 ;;;; emacs-lisp-mode
@@ -320,3 +327,7 @@ has passed."
   (custom-theme-set-faces 'modus-operandi-tritanopia
                           '(font-lock-comment-face ((t (:inherit modus-themes-slant :foreground "#595959")))))
   )
+
+(setup config:user
+  (:option user-full-name "duli kiles"
+           user-mail-address "duil4868@gmail.com"))
