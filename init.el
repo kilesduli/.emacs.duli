@@ -307,7 +307,7 @@ has passed."
 ;;;; rime
 (setup rime
   (:option default-input-method "rime"
-           rime-user-data-dir "~/.local/emacs-rime"
+           rime-user-data-dir "~/.local/share/emacs-rime"
            rime-disable-predicates '(meow-normal-mode-p
                                      meow-motion-mode-p
                                      meow-keypad-mode-p
