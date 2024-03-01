@@ -79,6 +79,14 @@
   :ensure '(nil nil func)
   :repeatable t)
 
+(setup-define :override-bind
+  (lambda (key command)
+    `(bind-key ,key ,command override-global-map))
+  :documentation "Bind KEY to COMMAND in `override-global-map'"
+  :debug '(form sexp)
+  :ensure '(kbd func)
+  :repeatable t)
+
 (setup-define :face
     (lambda (face spec) `(custom-set-faces (quote (,face ,spec))))
     :documentation "Customize FACE to SPEC."
@@ -310,6 +318,7 @@ has passed."
 
 ;;;; rime
 (setup rime
+  (:override-bind "C-," toggle-input-method)
   (:option default-input-method "rime"
            rime-user-data-dir "~/.local/share/emacs-rime"
            rime-disable-predicates '(meow-normal-mode-p
