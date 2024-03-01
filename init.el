@@ -332,9 +332,9 @@ has passed."
           (progn
             (setq cns-dict-directory (concat cns-dir "cpp-jieba/dict"))
             (setq cns-prog (concat cns-dir "cnws"))
-            (message "Compilation of `cnws' binary succeeded")
+            (message "Compilation of `cnws' binary succeeded, view compile log at *cnws-compile-buffer*")
             )
-        (error "Compilation of `cnws' binary failed!")))))
+        (error "Compilation of `cnws' binary failed!, view compile log at *cnws-compile-buffer")))))
 
 (defun d/cns--maybe-prompt-for-compile ()
   (let ((cns-dir (file-name-directory (locate-library "cns.el" t))))
