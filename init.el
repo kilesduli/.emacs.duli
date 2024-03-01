@@ -88,12 +88,12 @@
   :repeatable t)
 
 (setup-define :face
-    (lambda (face spec) `(custom-set-faces (quote (,face ,spec))))
-    :documentation "Customize FACE to SPEC."
-    :signature '(face spec ...)
-    :debug '(setup)
-    :repeatable t
-    :after-loaded t)
+  (lambda (face spec) `(custom-set-faces (quote (,face ,spec))))
+  :documentation "Customize FACE to SPEC."
+  :signature '(face spec ...)
+  :debug '(setup)
+  :repeatable t
+  :after-loaded t)
 
 (setup-define :if-host
   (lambda (hostname)
