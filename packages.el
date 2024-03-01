@@ -20,7 +20,7 @@
 (straight-use-package 'nerd-icons-completion)
 (straight-use-package '(org :type git :repo "emacs-straight/org-mode" :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*"))))
 
-(straight-use-package '(outli :type git :repo "https://github.com/jdtsmith/outli"))
+(straight-use-package '(outli :type git :host github :repo "jdtsmith/outli"))
 (straight-use-package 'rime)
 (straight-use-package '(benchmark-init :type git :repo "dholm/benchmark-init-el"))
 (straight-use-package '(cns :type git :host github :repo "kanglmf/emacs-chinese-word-segmentation"
