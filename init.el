@@ -67,62 +67,6 @@
     (:hook-into after-init-hook)))
 
 ;;;; define setup macro
-(setup-define :silence
-  (lambda (&rest body)
-    `(cl-letf (((symbol-function 'message) (lambda (&rest _args) nil)))
-       ,(macroexp-progn body)))
-  :documentation "Evaluate BODY but keep the echo era clean."
-  :debug '(setup))
-
-(setup-define :option*
-  (setup-make-setter
-   (lambda (name)
-     `(funcall (or (get ',name 'custom-get)
-                   #'symbol-value)
-       ',name))
-   (lambda (name val)
-     `(progn
-        (custom-load-symbol ',name)
-        (funcall (or (get ',name 'custom-set) #'set-default)
-                 ',name ,val))))
-
-  :documentation "Like default `:option', but set variables after the feature is
-loaded."
-  :debug '(sexp form)
-  :repeatable t
-  :after-loaded t)
-
-(setup-define :after
-  (lambda (feature &rest body)
-    `(:with-feature ,feature
-      (:when-loaded ,@body)))
-  :documentation "Eval BODY after FEATURE."
-  :indent 1)
-
-(setup-define :delay
-  (lambda (time &rest body)
-    `(run-with-idle-timer ,time nil
-      (lambda () ,@body)))
-  :documentation "Delay loading BODY until a certain amount of idle time
-has passed."
-  :indent 1)
-
-;;  src: https://emacs.nasy.moe/#Setup-EL
-(setup-define :autoload
-  (lambda (func)
-    (let ((fn (if (memq (car-safe func) '(quote function))
-                  (cadr func)
-                func)))
-      `(unless (fboundp (quote ,fn))
-         (autoload (function ,fn) ,(symbol-name (setup-get 'feature)) nil t))))
-  :documentation "Autoload COMMAND if not already bound."
-  :repeatable t
-  :signature '(FUNC ...))
-
-(setup-define :init
-  (lambda (&rest body) (macroexp-progn body))
-  :documentation "Init keywords like use-package and leaf.")
-
 (setup-define :advice
   (lambda (symbol where function)
     `(advice-add ',symbol ,where ,function))
@@ -132,6 +76,80 @@ has passed."
   :debug '(sexp sexp function-form)
   :ensure '(nil nil func)
   :repeatable t)
+
+(setup-define :face
+    (lambda (face spec) `(custom-set-faces (quote (,face ,spec))))
+    :documentation "Customize FACE to SPEC."
+    :signature '(face spec ...)
+    :debug '(setup)
+    :repeatable t
+    :after-loaded t)
+
+(setup-define :if-host
+  (lambda (hostname)
+    `(unless (string= (system-name) ,hostname)
+       ,(setup-quit)))
+  :documentation "If HOSTNAME is not the current hostname, stop evaluating form.")
+
+(setup-define :needs
+  (lambda (executable)
+    `(unless (executable-find ,executable)
+       ,(setup-quit)))
+  :documentation "If EXECUTABLE is not in the path, stop here."
+  :repeatable 1)
+
+(setup-define :option*
+  (lambda (name val)
+    `(customize-set-variable
+      ',(intern (format "%s-%s" (setup-get 'feature) name))
+      ,val
+      ,(format "Set for %s's setup block" (setup-get 'feature))))
+  :documentation "Set the option NAME to VAL.
+NAME is not the name of the option itself, but of the option with
+the feature prefix."
+  :debug '(sexp form)
+  :repeatable t)
+
+(setup-define :unhook
+  (lambda (func)
+    `(remove-hook (quote ,(setup-get 'hook)) ,func))
+  :documentation "Remove FUNC from the current hook."
+  :repeatable t
+  :ensure '(func)
+  :signature '(FUNC ...))
+
+(setup-define :local-unhook
+  (lambda (hook &rest functions)
+    `(add-hook
+      (quote ,(setup-get 'hook))
+      (lambda ()
+        ,@(mapcar
+           (lambda (arg)
+             (let ((fn (cond ((eq (car-safe arg) 'function) arg)
+                             ((eq (car-safe arg) 'quote)    `(function ,(cadr arg)))
+                             ((symbolp arg)                 `(function ,arg))
+                             (t                             arg))))
+               `(remove-hook (quote ,hook) ,fn t)))
+           functions))))
+  :documentation "Remove FUNCTION from HOOK only in the current hook."
+  :debug '(&rest sexp)
+  :repeatable nil)
+
+(setup-define :silence
+  (lambda (&rest body)
+    `(cl-letf (((symbol-function 'message) (lambda (&rest _args) nil)))
+       ,(macroexp-progn body)))
+  :documentation "Evaluate BODY but keep the echo era clean."
+  :debug '(setup))
+
+(setup-define :delay
+  (lambda (time &rest body)
+    `(run-with-idle-timer ,time nil
+      (lambda () ,@body)))
+  :documentation "Delay loading BODY until a certain amount of idle time
+has passed."
+  :indent 1)
+
 
 ;;; Stage 2: package
 ;;;; Outli: Org-like code outliner
