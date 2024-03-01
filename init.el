@@ -341,6 +341,20 @@ has passed."
   (:with-mode global-wakatime-mode
     (:hook-into after-init)))
 
+;;;; which-key
+(setup which-key
+  (:hook-into after-init)
+  (:option which-key-sort-order #'which-key-key-order-alpha
+           which-key-sort-uppercase-first nil
+           which-key-add-column-padding 1
+           which-key-max-display-columns nil
+           which-key-min-display-lines 6
+           ;; windows setting?
+           which-key-side-window-slot -10)
+  (:when-loaded
+    (which-key-setup-side-window-bottom)))
+
+
 ;;; Stage 3: major-mode settings
 ;; Let the configuration of major-mode be concentrated in one place for easy modification.
 ;;;; emacs-lisp-mode

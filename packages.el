@@ -6,6 +6,7 @@
 (straight-use-package 'consult)
 (straight-use-package 'embark)
 (straight-use-package 'marginalia)
+(straight-use-package 'which-key)
 
 (straight-use-package 'consult-dir)
 (straight-use-package 'consult-flycheck)
