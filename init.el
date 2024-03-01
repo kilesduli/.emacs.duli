@@ -1,4 +1,4 @@
-;;; init.el --- Description -*- lexical-binding: t; -*-
+;;; init.el --- Amadeus emacs(duli's emacs config) -*- lexical-binding: t; -*-
 
 ;;; Stage 1:
 ;;;; emacs version check
