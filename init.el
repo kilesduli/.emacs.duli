@@ -328,45 +328,14 @@ has passed."
 
 ;;;; cns
 ;; a word segmentation based on jieba, need compile first.
-(defun d/cns--compile-cnws-binary ()
-  "compile cnws to make it available"
-  (unless (fboundp 'cns) (require 'cns))
-  (let* ((cns-dir
-          (shell-quote-argument
-           (file-name-directory (locate-library "cns.el" t))))
-         (make-commands
-          (concat
-           "cd " cns-dir "; \
-             make;"))
-         (buffer (get-buffer-create "*cnws-compile-buffer*")))
-    (with-current-buffer buffer
-      (compilation-mode)
-      (if (zerop (let ((inhibit-read-only t))
-                   (call-process "sh" nil buffer t "-c" make-commands)))
-          (progn
-            (setq cns-dict-directory (concat cns-dir "cpp-jieba/dict"))
-            (setq cns-prog (concat cns-dir "cnws"))
-            (message "Compilation of `cnws' binary succeeded, view compile log at *cnws-compile-buffer*")
-            )
-        (error "Compilation of `cnws' binary failed!, view compile log at *cnws-compile-buffer")))))
-
-(defun d/cns--maybe-prompt-for-compile ()
-  (let ((cns-dir (file-name-directory (locate-library "cns.el" t))))
-    (if (file-exists-p (concat cns-dir "cnws"))
-        t
-      (yes-or-no-p
-       (format "emacs-chinese-word-segmentation will use `cnws' binary, it did\'t compile yet,
-compiling will take a moment, continue?")))))
-
-(defun d/cns--before-cns-mode-enable-check ()
-  (when (d/cns--maybe-prompt-for-compile)
-    (d/cns--compile-cnws-binary)))
-
 (setup cns
   (:with-function cns-auto-enable
     (:autoload-this)
     (:hook-into find-file))
-  (:advice cns-mode-enable :before d/cns--before-cns-mode-enable-check))
+  (let ((cns-dir (file-name-directory (locate-library "cns.el"))))
+    (:option* prog (expand-file-name "cnws" cns-dir)
+              dict-directory (concat cns-dir "dict"))))
+
 ;;;; wakatime
 (setup wakatime
   (:with-mode global-wakatime-mode
