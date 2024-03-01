@@ -25,3 +25,4 @@
 (straight-use-package '(benchmark-init :type git :repo "dholm/benchmark-init-el"))
 (straight-use-package '(cns :type git :host github :repo "kanglmf/emacs-chinese-word-segmentation"
                         :files ("cppjieba" "cnws.cpp" "Makefile" "cns.el")))
+(straight-use-package '(wakatime :type git :host github :repo "Borwe/wakatime-mode"))

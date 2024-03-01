@@ -367,6 +367,10 @@ compiling will take a moment, continue?")))))
     (:autoload-this)
     (:hook-into find-file))
   (:advice cns-mode-enable :before d/cns--before-cns-mode-enable-check))
+;;;; wakatime
+(setup wakatime
+  (:with-mode global-wakatime-mode
+    (:hook-into after-init)))
 
 ;;; Stage 3: major-mode settings
 ;; Let the configuration of major-mode be concentrated in one place for easy modification.
