@@ -3,7 +3,7 @@
 ;;; Stage 1:
 ;;;; emacs version check
 (when (version< emacs-version "29")
-  (warn "This configuration is only tested on Emacs 29"))
+  (warn "This configuration is only tested on Emacs 29 and higher"))
 
 ;;;; constant setup
 (defvar amadeus-emacs-dir user-emacs-directory
@@ -61,12 +61,14 @@
 (require 'setup)
 
 ;;;; benchmark-init
+;; Benchmark-init after setup load, but require setup won't take much time. It's fine.
 (setup benchmark-init
   (:require benchmark-init)
   (:with-function benchmark-init/deactivate
     (:hook-into after-init-hook)))
 
 ;;;; define setup macro
+;; Most of them from emacswiki. And it may not be used, providing an option.
 (setup-define :advice
   (lambda (symbol where function)
     `(advice-add ',symbol ,where ,function))
@@ -153,12 +155,14 @@ has passed."
 
 ;;; Stage 2: package
 ;;;; Outli: Org-like code outliner
+;; Using for organize this file.
 (setup outli
   (:hook-into prog-mode text-mode)
   (:bind-into outli-mode-map
     "C-c C-p" #'(lambda () (interactive) (outline-back-to-heading))))
 
 ;;;; Meow modal-editing
+;; Another modal-editing package.
 (setup meow
   (:require meow)
   (meow-global-mode 1)
@@ -314,6 +318,7 @@ has passed."
                                      meow-beacon-mode-p)))
 
 ;;;; cns
+;; a word segmentation based on jieba, need compile first.
 (defun d/cns--compile-cnws-binary ()
   "compile cnws to make it available"
   (unless (fboundp 'cns) (require 'cns))
