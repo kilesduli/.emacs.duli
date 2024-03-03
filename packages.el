@@ -19,7 +19,7 @@
 (straight-use-package 'doom-modeline)
 (straight-use-package 'doom-themes)
 (straight-use-package 'nerd-icons-completion)
-(straight-use-package '(org :type git :repo "emacs-straight/org-mode" :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*"))))
+(straight-use-package '(org :type git :host github :repo "emacs-straight/org-mode" :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*"))))
 
 (straight-use-package '(outli :type git :host github :repo "jdtsmith/outli"))
 (straight-use-package 'rime)
