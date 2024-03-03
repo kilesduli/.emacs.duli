@@ -1,5 +1,18 @@
 ;;; init.el --- Amadeus emacs(duli's emacs config) -*- lexical-binding: t; -*-
 
+;; The overall load order of my emacs config.
+;;
+;;  > Stage 0: .emacs.d/early-init.el
+;;  > Stage 1:.emacs.d/init.el
+;;    > Stage 1.5: .emacs.d/packages.el
+;;      > before Stage 2: install setup and begin benchmark
+;;    > Stage 2: package setting
+;;    > Stage 3: major mode setting
+;;    > Stage 4: user config
+;;  > .emacs.d/lisp/*
+;;  > .emacs.d/volatile/*
+;;
+
 ;;; Stage 1:
 ;;;; emacs version check
 (when (version< emacs-version "29")
