@@ -16,7 +16,7 @@
 ;;; Stage 1:
 ;;;; emacs version check
 (when (version< emacs-version "29")
-  (warn "This configuration is only tested on Emacs 29 and higher"))
+  (warn "This configuration is only tested on Emacs 30 and higher, 29 maybe fine"))
 
 ;;;; constant setup
 (defvar amadeus-emacs-dir user-emacs-directory
