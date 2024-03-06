@@ -82,14 +82,14 @@
 
 ;;;; define setup macro
 ;; Most of them from emacswiki. And it may not be used, providing an option.
-(setup-define :advice
-  (lambda (symbol where function)
-    `(advice-add ',symbol ,where ,function))
-  :documentation "Add a piece of advice on a function.
+(setup-define :advice-into
+  (lambda (symbol how)
+    `(advice-add ',symbol ,how #',(setup-get 'func)))
+  :documentation "Add the current function as a advice to the SYMBOL in the manner specified by HOW.
  See `advice-add' for more details."
   :after-loaded t
-  :debug '(sexp sexp function-form)
-  :ensure '(nil nil func)
+  :debug '(sexp sexp)
+  :ensure '(nil nil)
   :repeatable t)
 
 (setup-define :override-bind
@@ -296,7 +296,8 @@ has passed."
         (cdr args)))
 
 (setup vertico
-  (:advice completing-read-multiple :filter-args +vertico-crm-indicator-a)
+  (:with-function +vertico-crm-indicator-a
+    (:advice-into completing-read-multiple :filter-args))
   (:hook-into after-init)
   (:option vertico-resize nil
            vertico-count 17
