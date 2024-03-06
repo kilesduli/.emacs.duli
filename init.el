@@ -20,16 +20,19 @@
 
 ;;;; constant setup
 (defvar amadeus-emacs-dir user-emacs-directory
-  "The user-emacs-directory")
-(defvar amadeus-cache-dir (expand-file-name ".local/cache" amadeus-emacs-dir)
+  "The user-emacs-directory.")
+(defvar amadeus-local-dir (expand-file-name ".local/" amadeus-emacs-dir)
+  "The root of directory for local storage.")
+
+(defvar amadeus-cache-dir (expand-file-name "cache/" amadeus-local-dir)
   "This directory will replaced with user-emacs-directory
-   and place some unimportant stuff")
-(defvar amadeus-etc-dir (expand-file-name ".local/etc" amadeus-emacs-dir)
+   and place some unimportant stuff.")
+(defvar amadeus-etc-dir (expand-file-name "etc/" amadeus-emacs-dir)
   "This directory will store global data files")
 
-(defvar amadeus-lisp-dir (expand-file-name "lisp" amadeus-emacs-dir)
+(defvar amadeus-lisp-dir (expand-file-name "lisp/" amadeus-emacs-dir)
   "This directory contains third-party Lisp files.")
-(defvar amadeus-volatile-dir (expand-file-name "volatile" amadeus-emacs-dir)
+(defvar amadeus-volatile-dir (expand-file-name "volatile/" amadeus-emacs-dir)
   "This directory contains volatile configuration.  All Lisp
   files are loaded automatically.  You shouldn't byte-compile
   these Lisp files.  To disable a file, just change the extension
