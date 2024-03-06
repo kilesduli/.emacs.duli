@@ -41,7 +41,6 @@
 (defvar amadeus-packages-file (expand-file-name "packages.el" amadeus-emacs-dir)
   "This file is contains all straight-use-package declaration not include modules")
 
-;;;; change user-emacs-directory
 ;; From Henrik: https://github.com/doomemacs/doomemacs/blob/90b1b221fe7c20f2edef341a780e194cd22c7daa/lisp/doom.el#L544
 ;; HACK: I change `user-emacs-directory' because many packages (even built-in
 ;; ones) abuse it to build paths for storage/cache files (instead of correctly
