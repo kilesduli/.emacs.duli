@@ -55,12 +55,15 @@
 (setq user-emacs-directory amadeus-cache-dir)
 (add-to-list 'native-comp-eln-load-path (expand-file-name "eln/" amadeus-cache-dir))
 
-;;;; install straight.el, load package.el and require setup
-(setq straight-repository-branch "develop")
-(setq straight-check-for-modifications '(check-on-save find-when-checking))
+;;;; install straight and load setup
+(setq straight-base-dir (file-truename amadeus-local-dir)
+      straight-repository-branch "develop"
+      straight-build-dir (format "build-%s" emacs-version)
+      straight-vc-git-default-clone-depth '(1 single-branch)
+      straight-check-for-modifications '(check-on-save find-when-checking))
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" amadeus-local-dir))
       (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
